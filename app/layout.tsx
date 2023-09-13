@@ -4,6 +4,9 @@ import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import { Providers } from "./providers";
 import clsx from "clsx";
+import { cookies } from "next/headers";
+import { redirect } from 'next/navigation'
+import JwtService from "@/services/jwtService";
 
 export const metadata: Metadata = {
 	title: {
@@ -27,19 +30,21 @@ export default function RootLayout({
 }: {
 	children: React.ReactNode;
 }) {
-	return (
-		<html lang="en" suppressHydrationWarning>
-			<head />
-			<body
-				className={clsx(
-					"min-h-screen bg-background font-sans antialiased",
-					fontSans.variable
-				)}
-			>
-				<Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-					{children}
-				</Providers>
-			</body>
-		</html>
-	);
+
+		return (
+			<html lang="en" suppressHydrationWarning>
+				<head />
+				<body
+					className={clsx(
+						"min-h-screen bg-background font-sans antialiased",
+						fontSans.variable
+					)}
+				>
+					<Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+						{children}
+					</Providers>
+				</body>
+			</html>
+		);
+		
 }

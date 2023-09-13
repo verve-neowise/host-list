@@ -10,6 +10,7 @@ export type Host = {
 	hostName: string,
 	baseUrl: string,
 	filesUrl: string,
+	active: boolean,
 	accounts: {
 		id: number,
 		email: string,
