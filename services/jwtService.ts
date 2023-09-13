@@ -1,13 +1,18 @@
-import jwt from 'jsonwebtoken'
+import { SignJWT, jwtVerify } from 'jose'
+
+const secret = new TextEncoder().encode(
+    process.env.JWT_SECRET!!,
+)
 
 export default class JwtService {
     static sign() {
-        return jwt.sign({ }, process.env.JWT_SECRET!!, {
-            expiresIn: process.env.JWT_EXPIRE_TIME!!
-        })
+        return new SignJWT({ })
+            .setProtectedHeader({ alg: 'HS256' })
+            .setExpirationTime(process.env.JWT_EXPIRE_TIME!!)
+            .sign(Buffer.from(process.env.JWT_SECRET!!))
     }
 
     static verify(token: string) {
-        return jwt.verify(token, process.env.JWT_SECRET!!)
+        return jwtVerify(token, secret)
     }
 }

@@ -3,7 +3,7 @@ import HostService from "@/services/hostService";
 import JwtService from "@/services/jwtService";
 import { Host } from "@/types";
 import { Navbar, NavbarBrand, NavbarContent } from "@nextui-org/navbar"
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 async function getHosts(): Promise<Host[]> {
@@ -12,10 +12,10 @@ async function getHosts(): Promise<Host[]> {
 
 export default async function Home() {
 
-	const token = cookies().get("Auth-Token")
+	const token = cookies().get("Auth-Token")?.value ?? headers().get("Authorization")
 
 	try {
-		JwtService.verify(token?.value ?? "")
+		await JwtService.verify(token ?? "")
 	}
 	catch(e: any) {
 		redirect('/login')

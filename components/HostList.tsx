@@ -3,7 +3,7 @@ import { Host } from "@/types";
 import { Button, Chip, CircularProgress, Listbox, ListboxItem, useDisclosure } from "@nextui-org/react";
 import CreateHost from "./CreateHost";
 import { useState } from "react";
-import axios from 'axios'
+import axios from "@/lib/axios";
 
 export default function HostList({ hosts }: { hosts: Host[] }) {
 
@@ -23,7 +23,7 @@ export default function HostList({ hosts }: { hosts: Host[] }) {
 
     async function deleteHost(host: Host) {
         setLoading(true)
-        axios.delete("/api/hosts?id=" + host.id)
+        axios.delete("/hosts?id=" + host.id)
             .then(res => {
                 const host = res.data
                 console.log("deleted:", host);
@@ -39,7 +39,7 @@ export default function HostList({ hosts }: { hosts: Host[] }) {
     async function createHost(host: Host) {
         setLoading(true)
 
-        axios.post("/api/hosts", host)
+        axios.post("/hosts", host)
             .then(res => {
                 const host = res.data
 
@@ -57,7 +57,7 @@ export default function HostList({ hosts }: { hosts: Host[] }) {
     async function updateHost(host: Host) {
         setLoading(true)
 
-        axios.put("/api/hosts?id=" + host.id, host)
+        axios.put("/hosts?id=" + host.id, host)
             .then(res => {
                 const host = res.data
 

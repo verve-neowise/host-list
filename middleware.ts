@@ -5,8 +5,8 @@ export const config = {
   matcher: '/api/hosts/:function*',
 }
  
-export function middleware(request: NextRequest) {
-  if (!isAuthenticated(request)) {
+export async function middleware(request: NextRequest) {
+  if (!(await isAuthenticated(request))) {
     return new NextResponse(
       JSON.stringify({ success: false, message: 'authentication failed' }),
       { status: 401, headers: { 'content-type': 'application/json' } }
@@ -14,14 +14,18 @@ export function middleware(request: NextRequest) {
   }
 }
 
-function isAuthenticated(request: NextRequest) {
-    const token = request.cookies.get("Auth-Token")
+async function isAuthenticated(request: NextRequest) {
+    const token = request.cookies.get("Auth-Token")?.value ?? request.headers.get("Authorization")
+
+    console.log("token:", token)
 
     try {
-        JwtService.verify(token?.value ?? "")
+        await JwtService.verify(token ?? "")
+        console.log("verified:", token)
         return true
     }
     catch(e: any) {
+        console.log("error:", e)
         return false
     }
 }
