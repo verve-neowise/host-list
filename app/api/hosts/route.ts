@@ -2,6 +2,11 @@ import HostService from "@/services/hostService";
 import { Host } from "@/types";
 import { NextResponse } from "next/server";
 
+export async function GET(request: Request) {
+  const hosts = await HostService.allHost()
+  return NextResponse.json(hosts)
+}
+
 export async function POST(request: Request) {
   const host: Host = await request.json()
   const response = await HostService.createHost(host)

@@ -15,7 +15,12 @@ export async function middleware(request: NextRequest) {
 }
 
 async function isAuthenticated(request: NextRequest) {
+
     const token = request.cookies.get("Auth-Token")?.value ?? request.headers.get("Authorization")
+
+    if (token == process.env.CLIENT_TOKEN) {
+      return true
+    }
 
     console.log("token:", token)
 
